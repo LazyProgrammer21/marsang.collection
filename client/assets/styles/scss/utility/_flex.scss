@@ -1,0 +1,19 @@
+.flex {
+  display: flex;
+}
+
+.split-pair {
+  justify-content: space-between;
+}
+
+.split-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.gap-2 {
+  gap: 2rem;
+}
