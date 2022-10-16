@@ -1,12 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const messagesRouter = require("./controllers/messagesRouter");
-const userRouter = require("./routes/user");
+const userRouter = require("./routes/userRoutes");
+const middleware = require("./utils/middleware");
 
 const app = express();
 
@@ -16,12 +16,15 @@ mongoose.connect(url).then(() => {
   logger.info("DB Connected");
 });
 app.use(cors());
-app.use(bodyParser());
-// we will use body-parser library instead of express.json()
-// app.use(express.json());
+
+app.use(express.json());
 app.use(express.static("dist"));
-app.use("/api/messages", messagesRouter);
-app.use("/api", userRouter);
+app.use(middleware.tokenExtractor);
+// app.use(middleware.unknownEndpoint);
+// app.use(middleware.errorHandler);
+// app.use("/api/messages", messagesRouter);
+app.use("/api/signup", userRouter);
+app.use("/api/signin", userRouter);
 // sends index.html
 app.use("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));

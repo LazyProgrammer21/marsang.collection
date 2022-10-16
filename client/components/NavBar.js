@@ -9,8 +9,14 @@ const NavBar = () => (
         <Link to="/" className="text-link">
           Home
         </Link>
-        <Link to="/messages" className="text-link">
-          Messages
+        <Link to="/Men" className="text-link">
+          Men
+        </Link>
+        <Link to="/Women" className="text-link">
+          Women
+        </Link>
+        <Link to="/Kids" className="text-link">
+          Kids
         </Link>
       </div>
     </div>

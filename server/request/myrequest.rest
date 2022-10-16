@@ -1,0 +1,10 @@
+POST http://localhost:3005/api/signup
+Content-Type: application/json
+
+{
+    "firstName":"Subash",
+    "Email":"tamang.subash@gmail.com",
+    "hash_password":"admin123",      
+    "phoneNumber":"9865457708"
+      
+}
