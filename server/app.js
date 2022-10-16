@@ -16,7 +16,6 @@ mongoose.connect(url).then(() => {
   logger.info("DB Connected");
 });
 app.use(cors());
-
 app.use(express.json());
 app.use(express.static("dist"));
 app.use(middleware.tokenExtractor);

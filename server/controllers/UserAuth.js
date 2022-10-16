@@ -1,3 +1,4 @@
+// const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const config = require("../utils/config");
@@ -49,37 +50,37 @@ exports.signup = async (request, response, next) => {
   }
 };
 
-exports.signin = async (req, res) => {
-  console.log(req.body);
-  const { email, password } = req.body;
-  User.findOne({ email }).exec((error, user) => {
-    if (error) return res.status(400).json({ error });
+// exports.signin = async (req, res) => {
+//   console.log(req.body);
+//   const { email, password } = req.body;
+//   User.findOne({ email }).exec((error, user) => {
+//     if (error) return res.status(400).json({ error });
 
-    if (!user) {
-      return res.status(400).json({ error: "User not found!" });
-    }
-    if (user) {
-      const isCorrect = bcrypt.compare(password, user.hash_password);
-      if (isCorrect) {
-        const userForToken = {
-          email: user.Email,
-          password: user.password,
-          id: user._id,
-        };
-        const token = jwt.sign(userForToken, config.SECRET, {
-          expiresIn: "1h",
-        });
-        res.status(200).send({
-          token,
-          email: user.Email,
-          name: user.firstName,
-          role: user.role,
-        });
-      } else {
-        return res.status(400).json({ error: "Password wrong" });
-      }
-    } else {
-      return res.status(400).json({ message: "Something went Wrong...!" });
-    }
-  });
-};
+//     if (!user) {
+//       return res.status(400).json({ error: "User not found!" });
+//     }
+//     if (user) {
+//       const isCorrect = bcrypt.compare(password, user.hash_password);
+//       if (isCorrect) {
+//         const userForToken = {
+//           email: user.Email,
+//           password: user.password,
+//           id: user._id,
+//         };
+//         const token = jwt.sign(userForToken, config.SECRET, {
+//           expiresIn: "1h",
+//         });
+//         res.status(200).send({
+//           token,
+//           email: user.Email,
+//           name: user.firstName,
+//           role: user.role,
+//         });
+//       } else {
+//         return res.status(400).json({ error: "Password wrong" });
+//       }
+//     } else {
+//       return res.status(400).json({ message: "Something went Wrong...!" });
+//     }
+//   });
+// };
