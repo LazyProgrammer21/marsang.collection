@@ -5,45 +5,36 @@ const bcrypt = require("bcryptjs");
 
 router.post("/", async (request, response, next) => {
   console.log(request.body);
-  try {
-    const { Fname, email, password, phone } = request.body;
 
-    if (Fname.length < 3 || password.length < 3) {
-      response.status(400).json({
+  try {
+    const { firstName, Email, password, phoneNumber } = request.body;
+
+    if (firstName.length < 3 || password.length < 3) {
+      return response.status(400).json({
         error: "error coz FirstName and password <3 and Email is not unique ",
       });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ Email });
     if (existingUser) {
-      response.status(400).json({ error: "User already exits with Email" });
-    }
+      return response
+        .status(400)
+        .json({ error: "User already exits with Email" });
+    } else {
+      const saltRounds = 10;
+      const hash_password = await bcrypt.hash(password, saltRounds);
 
-    const saltRounds = 10;
-    const hash_password = await bcrypt.hash(password, saltRounds);
+      const user = new User({
+        firstName,
+        Email,
+        hash_password,
+        phoneNumber,
+      });
 
-    const user = new User({
-      Fname,
-      email,
-      hash_password,
-      phone,
-    });
-
-    const savedUser = user.save((error, data) => {
+      const savedUser = await user.save();
+      response.status(201).json(savedUser);
       //database ko error aayo vane yo response auxa
-      if (error) {
-        console.log(error);
-        return response.status(400).json({
-          message: "Something went wrong!",
-        });
-      }
-      if (data) {
-        return response.status(201).json({
-          user: data,
-        });
-      }
-    });
-    response.status(201).json(savedUser);
+    }
   } catch (error) {
     next(error);
   }
